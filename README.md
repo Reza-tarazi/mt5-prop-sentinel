@@ -3,28 +3,29 @@
 [![Platform: MetaTrader 5](https://img.shields.io/badge/Platform-MetaTrader%205-blue.svg)](https://www.metatrader5.com)
 [![Language: MQL5](https://img.shields.io/badge/Language-MQL5-orange.svg)]()
 [![Prop-Firm Safe: Read--Only](https://img.shields.io/badge/Prop--Firm-Safe%20(Read--Only)-green.svg)]()
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)]()
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-یک اکسپرت مانیتورینگ **فقط‌خواندنی (Read-Only)** برای متاتریدر ۵ جهت مدیریت ریسک، پیشگیری از نقض قوانین دروداون در حساب‌های پراپ‌فرم و مهار خطاهای رفتاری (ترید انتقامی و استاپ‌کشی).
-
----
-
-## 📌 ویژگی‌های کلیدی
-
-- **پایش لحظه‌ای جابه‌جایی و عقب‌کشیدن حد ضرر (SL Tampering):** محاسبه خودکار میزان دلاریِ ریسک تحمیل‌شده و ارسال اخطار فوری به تلگرام.
-- **توقف با توالی باخت (Consecutive Losses):** ممانعت از ترید پس از ۲ باخت متوالی روزانه و صدور دستور خروج از بازار.
-- **تایمر وقفه اجباری روانی (Cooldown Timer):** هشدار ترید شتاب‌زده (Revenge Alert) در صورت ورود زیر ۱۰ دقیقه پس از باخت قبلی.
-- **پایش سقف افت مجاز و تارگت سود روزانه:** هشدار آنی با لمس سقف ضرر مجاز روزانه یا تارگت خروج روزانه.
-- **پنل هوشمند روی چارت (On-Chart HUD):** نمایش زنده سشن بازار (لندن/نیویورک)، نوسان ATR، و محاسبه دقیق لات‌سایز برای ریسک مشخص (۰.۵٪).
-- **پروتکل تعهد آگاهانه (Pre-Trade 30s Pop-Up):** نمایش پاپ‌آپ اخطار تفکر ۳۰ ثانیه‌ای روی صفحه متاتریدر به محض کلیک روی Buy/Sell.
+A robust, **read-only** MetaTrader 5 Expert Advisor designed to enforce psychological discipline, dynamic risk governance, and prevent drawdown breaches on Prop-Firm accounts via automated, real-time Telegram alerts.
 
 ---
 
-## 🚀 راهنمای نصب و راه‌اندازی سریع
+## 📌 Architectural Overview & Key Features
 
-### ۱. فعال‌سازی وب‌ریکوئست در متاتریدر ۵
-1. در متاتریدر ۵ کلیدهای `Ctrl + O` را بزنید و به تب **Expert Advisors** بروید.
-2. تیک **Allow WebRequest for listed URL** را فعال کنید.
-3. آدرس زیر را به لیست اضافه کرده و OK را بزنید:
+- **Real-Time Stop-Loss Tampering Alerts:** Instantly tracks any manual stop-loss widening or removal via tick-level and transaction events (`OnTradeTransaction`), calculates the exact monetary risk delta in USD, and dispatches immediate warnings to Telegram.
+- **Consecutive Loss Hard Stop:** Enforces a daily consecutive loss ceiling (e.g., maximum 2 consecutive losses) to neutralize tilt and overtrading cycles.
+- **Mandatory Cooldown Enforcer (Revenge Alert):** Monitors trade execution timestamps and triggers instant alerts if a new position is initiated prior to the mandatory rest window (e.g., 10 minutes) following a loss.
+- **Daily Drawdown & Profit Target Caps:** Continuously assesses equity fluctuation relative to the day-opening balance, delivering urgent shutdown notifications when the daily loss limit or profit target is hit.
+- **Dynamic On-Chart HUD:** Displays server-aligned trading sessions (London/NY/Asia), real-time 14-period ATR volatility buffers, and precise contract-sized lot calculations for strict 0.5% risk models.
+- **30-Second Pre-Trade Pop-Up Protocol:** Generates an immediate visual and acoustic pop-up prompt inside MetaTrader 5 upon order entry, demanding deliberate commitment before holding discretionary trades.
+
+---
+
+## 🚀 Quick Setup & Configuration
+
+### 1. Enable WebRequests in MetaTrader 5
+1. Inside MetaTrader 5, press `Ctrl + O` to open the **Options** window.
+2. Navigate to the **Expert Advisors** tab.
+3. Check **Allow WebRequest for listed URL**.
+4. Double-click the green addition field and add:
    ```text
    [https://api.telegram.org](https://api.telegram.org)
